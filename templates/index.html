@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>АгроПуть — Навигатор по профессиям АПК</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: #f8f9fa;
+            padding-top: 4rem;
+        }
+        .profession-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .profession-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        }
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0; width: 100%; z-index: 1030;
+        }
+        header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>АгроПуть — Навигатор по профессиям АПК</h1>
+    </header>
+
+    <main class="container my-4">
+        <p class="lead text-center mb-5">
+            Выберите профессию, чтобы узнать больше о возможностях и путях обучения в агропромышленном комплексе.
+        </p>
+        <div id="professions" class="row g-4 justify-content-center">
+            <!-- Карточки профессий появятся здесь -->
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 АгроПуть. Все права защищены.
+    </footer>
+
+    <script>
+        async function loadProfessions() {
+            try {
+                const response = await fetch('/api/professions');
+                const data = await response.json();
+                const container = document.getElementById('professions');
+                container.innerHTML = '';
+
+                data.forEach(prof => {
+                    const col = document.createElement('div');
+                    col.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+
+                    col.innerHTML = `
+                        <div class="card profession-card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-success">${prof.name}</h5>
+                                <p class="card-text flex-grow-1">${prof.description}</p>
+                                <a href="#" class="btn btn-outline-success mt-auto" onclick="alert('Подробнее о профессии: ${prof.name}')">Подробнее</a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(col);
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки профессий:', error);
+                document.getElementById('professions').innerHTML = '<p class="text-danger text-center">Не удалось загрузить данные. Попробуйте позже.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfessions);
+    </script>
+</body>
+</html>
