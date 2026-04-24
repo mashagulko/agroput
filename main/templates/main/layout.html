@@ -1,0 +1,69 @@
+{% load static %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </head>
+
+    <body>
+
+    <div class="wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+              <!--  <img src="{% static 'main/img/photo.jpg' %}" alt="logo">-->
+            </div>
+
+            <ul class="menu">
+                <li>
+                    <a href="{% url 'index' %}">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Главная</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'quiz' %}">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Тест</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="catalog">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Каталог профессий</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="map">
+                        <i class="fa-solid fa-address-book"></i>
+                        <span>Карта образовательных учреждений</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <a href="" class="btn btn-primary w-100">
+                    <i class="fas fa-plus"></i> Добавить
+                </a>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+    </div>
+
+    </body>
+    </html>

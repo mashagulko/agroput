@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #FAFFBA; /* светлый фон */
+}
+
+/* layout */
+.wrapper {
+    display: flex;
+}
+
+/* sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #83C082; /* основной цвет */
+    color: #1f1f1f;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* header */
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar-header img {
+    width: 70px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.sidebar-header h4 {
+    margin: 0;
+}
+
+/* menu */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin-bottom: 10px;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    color: #1f1f1f;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* hover эффект */
+.menu a:hover {
+    background: #6fb06d; /* чуть темнее зелёный */
+    color: #fff;
+    transform: translateX(5px);
+}
+
+/* icons */
+.menu i {
+    width: 20px;
+}
+
+/* footer */
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.sidebar-footer .btn {
+    background: #1f1f1f;
+    border: none;
+}
+
+.sidebar-footer .btn:hover {
+    background: #333;
+}
+
+/* content */
+.content {
+    flex: 1;
+    padding: 30px;
+}
