@@ -6,6 +6,15 @@
   {% block content %}
   <div class="features">
        <h1>Главная</h1>
-       <p>qw</p>
+       <p></p>
+       {% for article in articles %}
+           <div>
+               <h2>{{ article.title }}</h2>
+               <p>{{ article.anons }}</p>
+               <small>{{ article.full_text }}</small>
+           </div>
+       {% empty %}
+           <p>Статей пока нет.</p>
+       {% endfor %}
    </div>
   {% endblock %}
