@@ -5,6 +5,7 @@ from catalog.models import Profession
 class University(models.Model):
     name = models.CharField("Название университета", max_length=200)
     address = models.CharField("Адрес", max_length=100)
+    link = models.URLField("Ссылка", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -16,7 +17,7 @@ class University(models.Model):
 
 class Specialty(models.Model):
     name = models.CharField("Название специальности", max_length=200)
-    description = models.TextField("Описание")
+    description = models.TextField("Описание", null=True, blank=True)
 
     university = models.ForeignKey(
         University,

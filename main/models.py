@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 class Article(models.Model):
     title = models.CharField("Заголовок", max_length=200)
-    anons = models.CharField("Краткое описание", max_length=250)
+    anons = models.CharField("Краткое описание", max_length=250,null=True,blank=True)
     full_text = models.TextField("Текст статьи")
-    created_at = models.DateTimeField("Дата публикации", auto_now_add=True)
+    created_at = models.DateTimeField("Дата публикации",null=True,blank=True)
     is_published = models.BooleanField("Опубликовано", default=True)
 
     def __str__(self):

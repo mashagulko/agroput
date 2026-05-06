@@ -1,11 +1,40 @@
+{% extends 'main/layout.html' %}
 
-  {% extends 'main/layout.html' %}
+{% block title %}Каталог профессий{% endblock %}
 
-    {% block title %}Каталог профессий{% endblock %}
+{% block content %}
+<div class="page">
+    <h1 class="page-title">Каталог профессий</h1>
+    <p class="page-lead">Выберите направление, сравните описание и посмотрите, какие специальности могут привести к этой профессии.</p>
 
-  {% block content %}
-  <div class="features">
-       <h1>Каталог профессий</h1>
-       <p></p>
-   </div>
-  {% endblock %}
+    <form class="toolbar" method="get">
+        <input class="search-input" type="search" name="q" value="{{ query }}" placeholder="Поиск по профессии">
+        <button class="btn-main" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Найти
+        </button>
+        {% if query %}
+            <a class="btn-soft" href="{% url 'catalog' %}">Сбросить</a>
+        {% endif %}
+    </form>
+
+    <div class="grid">
+        {% for profession in professions %}
+            <article class="card-item">
+                <h3>{{ profession.title }}</h3>
+                <p>{{ profession.description|truncatechars:190 }}</p>
+                <div class="tag-row">
+                    {% if profession.salary %}
+                        <span class="tag">зарплата от {{ profession.salary }} ₽</span>
+                    {% else %}
+                        <span class="tag">зарплата уточняется</span>
+                    {% endif %}
+                    <span class="tag">профессия</span>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">По этому запросу профессии не найдены.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

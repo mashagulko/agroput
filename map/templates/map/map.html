@@ -1,11 +1,44 @@
+{% extends 'main/layout.html' %}
 
-  {% extends 'main/layout.html' %}
+{% block title %}Учебные заведения{% endblock %}
 
-    {% block title %}Карта образовательных учреждений{% endblock %}
+{% block content %}
+<div class="page">
+    <h1 class="page-title">Учебные заведения</h1>
+    <p class="page-lead">Здесь можно собрать университеты и колледжи, связанные с аграрными специальностями.</p>
 
-  {% block content %}
-  <div class="features">
-       <h1>Карта образовательных учреждений</h1>
-       <p></p>
-   </div>
-  {% endblock %}
+    <div class="map-layout section">
+        <section>
+            <div class="grid" style="grid-template-columns: 1fr;">
+                {% for university in universities %}
+                    <article class="card-item">
+                        <h3>{{ university.name }}</h3>
+                        <p>{{ university.address }}</p>
+                        <div class="tag-row">
+                            {% for specialty in university.specialty_set.all %}
+                                <span class="tag">{{ specialty.name }}</span>
+                            {% empty %}
+                                <span class="tag">специальности не добавлены</span>
+                            {% endfor %}
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="empty-state">Учебные заведения пока не добавлены.</div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="map-canvas" aria-label="Схема учебных заведений">
+            {% for university in universities|slice:":4" %}
+                <div class="map-pin" title="{{ university.name }}">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+            {% empty %}
+                <div class="map-pin" style="left: 45%; top: 42%;">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+</div>
+{% endblock %}
