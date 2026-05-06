@@ -1,11 +1,88 @@
+{% extends 'main/layout.html' %}
 
-  {% extends 'main/layout.html' %}
+{% block title %}АгроПуть{% endblock %}
 
-    {% block title %}Главная{% endblock %}
+{% block content %}
+<div class="page">
+    <section class="hero">
+        <div>
+            <h1>АгроПуть</h1>
+            <p>Помогаем выбрать профессию в агросфере, понять свои сильные стороны и найти учебное заведение для старта карьеры.</p>
+            <div class="hero-actions">
+                <a class="btn-main" href="{% url 'quiz' %}">
+                    <i class="fa-solid fa-list-check"></i>
+                    Пройти тест
+                </a>
+                <a class="btn-ghost" href="{% url 'catalog' %}">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Смотреть профессии
+                </a>
+            </div>
+        </div>
 
-  {% block content %}
-  <div class="features">
-       <h1>Главная</h1>
-       <p>qw</p>
-   </div>
-  {% endblock %}
+        <div class="hero-panel">
+            <div class="hero-stat">
+                <span>Профессии</span>
+                <strong>{{ professions|length }}</strong>
+            </div>
+            <div class="hero-stat">
+                <span>Учебные заведения</span>
+                <strong>{{ universities|length }}</strong>
+            </div>
+            <div class="hero-stat">
+                <span>Маршрут</span>
+                <strong>3 шага</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-head">
+            <div>
+                <h2>Как это работает</h2>
+                <p>Короткий путь от интересов к понятному образовательному маршруту.</p>
+            </div>
+        </div>
+        <div class="grid">
+            <article class="card-item">
+                <span class="tag">1 шаг</span>
+                <h3>Пройдите тест</h3>
+                <p>Ответьте на вопросы о том, что вам интересно: техника, растения, животные, управление или исследования.</p>
+            </article>
+            <article class="card-item">
+                <span class="tag">2 шаг</span>
+                <h3>Получите профессию</h3>
+                <p>Система сопоставляет ответы с направлениями и помогает выбрать подходящую сферу.</p>
+            </article>
+            <article class="card-item">
+                <span class="tag">3 шаг</span>
+                <h3>Найдите где учиться</h3>
+                <p>Посмотрите специальности и учебные заведения, связанные с выбранной профессией.</p>
+            </article>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="section-head">
+            <div>
+                <h2>Статьи</h2>
+                <p>Материалы для знакомства с аграрными направлениями.</p>
+            </div>
+        </div>
+        <div class="grid">
+            {% for article in articles %}
+                <article class="card-item">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.anons }}</p>
+                    <div class="meta-row">
+                        <span class="tag">{{ article.created_at|date:"d.m.Y" }}</span>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state">Статей пока нет.</div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
