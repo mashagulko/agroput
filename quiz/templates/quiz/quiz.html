@@ -1,11 +1,43 @@
+{% extends 'main/layout.html' %}
 
-  {% extends 'main/layout.html' %}
+{% block title %}Тест{% endblock %}
 
-    {% block title %}Тест{% endblock %}
+{% block content %}
+<div class="page">
+    <h1 class="page-title">Профориентационный тест</h1>
+    <p class="page-lead">Ответьте на вопросы, чтобы понять, какие аграрные профессии ближе к вашим интересам.</p>
 
-  {% block content %}
-  <div class="features">
-       <h1>Тест</h1>
-       <p>qw</p>
-   </div>
-  {% endblock %}
+    <div class="quiz-shell section">
+        <aside class="card-item">
+            <h3>{% if test %}{{ test.title }}{% else %}Тест скоро появится{% endif %}</h3>
+            <p>Прохождение можно сделать пошаговым: один вопрос, несколько вариантов, затем результат с подходящими профессиями.</p>
+            <div class="quiz-progress">
+                <span></span>
+            </div>
+            <div class="tag-row mt-3">
+                <span class="tag">{{ questions|length }} вопросов</span>
+                <span class="tag">агропрофессии</span>
+            </div>
+        </aside>
+
+        <section class="card-item">
+            {% if first_question %}
+                <span class="tag">Вопрос 1</span>
+                <h3 class="mt-3">{{ first_question.text }}</h3>
+                <div class="answer-list">
+                    {% for answer in first_question.answer_set.all %}
+                        <button class="answer-option" type="button">
+                            <i class="fa-regular fa-circle"></i>
+                            <span>{{ answer.text }}</span>
+                        </button>
+                    {% empty %}
+                        <div class="empty-state">Для этого вопроса пока нет вариантов ответа.</div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">Вопросы пока не добавлены. Создайте тест, вопросы и ответы в админке Django.</div>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}
