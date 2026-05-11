@@ -15,12 +15,9 @@ class Test(models.Model):
 
 
 class Question(models.Model):
-    test = models.ForeignKey(
-        Test,
-        on_delete=models.CASCADE,
-        verbose_name="Тест"
-    )
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="Тест")
     text = models.TextField("Вопрос")
+    professions = models.ManyToManyField(Profession, verbose_name="Профессии")
 
     def __str__(self):
         return self.text
@@ -31,17 +28,9 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE,
-        verbose_name="Вопрос"
-    )
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос")
     text = models.CharField("Ответ", max_length=200)
-    profession = models.ForeignKey(
-        Profession,
-        on_delete=models.CASCADE,
-        verbose_name="Профессия"
-    )
+    score = models.IntegerField("Баллы")
 
     def __str__(self):
         return self.text
@@ -52,20 +41,9 @@ class Answer(models.Model):
 
 
 class TestResult(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name="Пользователь"
-    )
-    profession = models.ForeignKey(
-        Profession,
-        on_delete=models.CASCADE,
-        verbose_name="Профессия"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Пользователь")
+    profession = models.ForeignKey(Profession, on_delete=models.CASCADE, verbose_name="Профессия")
     score = models.IntegerField("Баллы")
-    created_at = models.DateTimeField("Дата прохождения", auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} - {self.profession}"
