@@ -1,15 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Profession
 
+
 def catalog(request):
-    query = request.GET.get('q', '').strip()
     professions = Profession.objects.all()
-    if query:
-        professions = professions.filter(title__icontains=query)
+    return render(request, 'catalog/catalog.html', {'professions': professions})
 
-    return render(request, 'catalog/catalog.html', {
-        'professions': professions,
-        'query': query,
-    })
 
+def profession_detail(request, pk):
+    profession = get_object_or_404(Profession, pk=pk)
+    return render(request, 'catalog/profession_detail.html', {'profession': profession})
 

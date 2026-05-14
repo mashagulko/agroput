@@ -30,7 +30,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос")
     text = models.CharField("Ответ", max_length=200)
-    score = models.IntegerField("Баллы")
+    score = models.IntegerField("Баллы", default=3)
 
     def __str__(self):
         return self.text

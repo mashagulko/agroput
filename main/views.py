@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Article
 from catalog.models import Profession
 from map.models import University
@@ -13,4 +13,11 @@ def index(request):
         'universities': universities,
     }
     return render(request, 'main/index.html', context)
+
+
+def article_detail(request, article_id):
+    article = get_object_or_404(Article, id=article_id, is_published=True)
+    return render(request, 'main/article_detail.html', {
+        'article': article,
+    })
 

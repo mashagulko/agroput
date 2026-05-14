@@ -2,6 +2,11 @@
 
 {% block title %}Тест{% endblock %}
 
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="page">
     <h1 class="page-title">Профориентационный тест</h1>
@@ -10,9 +15,9 @@
     <div class="quiz-shell section">
         <aside class="card-item">
             <h3>{% if test %}{{ test.title }}{% else %}Тест скоро появится{% endif %}</h3>
-            <p>Прохождение можно сделать пошаговым: один вопрос, несколько вариантов, затем результат с подходящими профессиями.</p>
+            <p>Выберите по одному варианту в каждом вопросе. После отправки система начислит баллы профессиям и покажет самые подходящие направления.</p>
             <div class="quiz-progress">
-                <span></span>
+                <span style="width: {% if results %}100{% else %}0{% endif %}%;"></span>
             </div>
             <div class="tag-row mt-3">
                 <span class="tag">{{ questions|length }} вопросов</span>
@@ -20,24 +25,55 @@
             </div>
         </aside>
 
-        <section class="card-item">
-            {% if first_question %}
-                <span class="tag">Вопрос 1</span>
-                <h3 class="mt-3">{{ first_question.text }}</h3>
-                <div class="answer-list">
-                    {% for answer in first_question.answer_set.all %}
-                        <button class="answer-option" type="button">
-                            <i class="fa-regular fa-circle"></i>
-                            <span>{{ answer.text }}</span>
-                        </button>
-                    {% empty %}
-                        <div class="empty-state">Для этого вопроса пока нет вариантов ответа.</div>
+        <section class="card-item quiz-card">
+            {% if questions %}
+                <form class="quiz-form" method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <fieldset class="quiz-field">
+                            <legend>
+                                <span class="tag">Вопрос {{ forloop.counter }} из {{ questions|length }}</span>
+                                <strong>{{ field.label }}</strong>
+                            </legend>
+                            <div class="answer-list">
+                                {{ field }}
+                            </div>
+                            {% if field.errors %}
+                                <div class="form-error">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </fieldset>
                     {% endfor %}
-                </div>
+
+                    <button class="btn-main quiz-submit" type="submit">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        Показать результат
+                    </button>
+                </form>
             {% else %}
                 <div class="empty-state">Вопросы пока не добавлены. Создайте тест, вопросы и ответы в админке Django.</div>
             {% endif %}
         </section>
     </div>
+
+    {% if results %}
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h2>Ваши профессии</h2>
+                    <p>Чем больше баллов, тем сильнее ответы совпали с направлением.</p>
+                </div>
+            </div>
+            <div class="grid">
+                {% for item in results|slice:":6" %}
+                    <article class="card-item">
+                        <span class="tag">{{ item.score }} баллов</span>
+                        <h3 class="mt-3">{{ item.profession.title }}</h3>
+                        <p>{{ item.profession.description|default:"Описание профессии скоро появится."|truncatechars:180 }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 </div>
 {% endblock %}
