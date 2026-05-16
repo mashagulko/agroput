@@ -10,48 +10,104 @@
 {% block content %}
 <div class="page">
     <h1 class="page-title">Профориентационный тест</h1>
-    <p class="page-lead">Ответьте на вопросы, чтобы понять, какие аграрные профессии ближе к вашим интересам.</p>
+    <p class="page-lead">
+        Ответьте на вопросы, чтобы понять, какие аграрные профессии ближе к вашим интересам.
+    </p>
 
     <div class="quiz-shell section">
         <aside class="card-item">
-            <h3>{% if test %}{{ test.title }}{% else %}Тест скоро появится{% endif %}</h3>
-            <p>Выберите по одному варианту в каждом вопросе. После отправки система начислит баллы профессиям и покажет самые подходящие направления.</p>
-            <div class="quiz-progress">
-                <span style="width: {% if results %}100{% else %}0{% endif %}%;"></span>
-            </div>
-            <div class="tag-row mt-3">
-                <span class="tag">{{ questions|length }} вопросов</span>
-                <span class="tag">агропрофессии</span>
-            </div>
+            <h3>
+                {% if test %}
+                    {{ test.title }}
+                {% else %}
+                    Тест скоро появится
+                {% endif %}
+            </h3>
+
+            <p>
+                Выберите один вариант ответа. Нажимайте «Далее», чтобы перейти к следующему вопросу.
+                В конце система начислит баллы профессиям и покажет результат.
+            </p>
+
+            {% if total_questions %}
+                {% widthratio current_number total_questions 100 as progress_percent %}
+
+                <div class="quiz-progress">
+                    <span style="width: {% if results %}100{% else %}{{ progress_percent }}{% endif %}%;"></span>
+                </div>
+
+                <div class="tag-row mt-3">
+                    <span class="tag">Вопрос {{ current_number }} из {{ total_questions }}</span>
+                    <span class="tag">агропрофессии</span>
+                </div>
+            {% else %}
+                <div class="quiz-progress">
+                    <span style="width: 0%;"></span>
+                </div>
+
+                <div class="tag-row mt-3">
+                    <span class="tag">0 вопросов</span>
+                    <span class="tag">агропрофессии</span>
+                </div>
+            {% endif %}
         </aside>
 
         <section class="card-item quiz-card">
-            {% if questions %}
+            {% if results %}
+                <div class="quiz-result-preview">
+                    <h2>Тест завершён</h2>
+                    <p>Ниже показаны профессии, которые больше всего подходят по вашим ответам.</p>
+                </div>
+
+            {% elif form %}
                 <form class="quiz-form" method="post">
                     {% csrf_token %}
 
                     {% for field in form %}
                         <fieldset class="quiz-field">
                             <legend>
-                                <span class="tag">Вопрос {{ forloop.counter }} из {{ questions|length }}</span>
+                                <span class="tag">Вопрос {{ current_number }} из {{ total_questions }}</span>
                                 <strong>{{ field.label }}</strong>
                             </legend>
+
                             <div class="answer-list">
                                 {{ field }}
                             </div>
+
                             {% if field.errors %}
-                                <div class="form-error">{{ field.errors|striptags }}</div>
+                                <div class="form-error">
+                                    {{ field.errors|striptags }}
+                                </div>
                             {% endif %}
                         </fieldset>
                     {% endfor %}
 
-                    <button class="btn-main quiz-submit" type="submit">
-                        <i class="fa-solid fa-chart-simple"></i>
-                        Показать результат
-                    </button>
+                    <div class="quiz-buttons">
+                        {% if not is_first %}
+                            <button class="btn-main quiz-submit" type="submit" name="action" value="back">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                Назад
+                            </button>
+                        {% endif %}
+
+                        {% if not is_last %}
+                            <button class="btn-main quiz-submit" type="submit" name="action" value="next">
+                                Далее
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        {% else %}
+                            <button class="btn-main quiz-submit" type="submit" name="action" value="finish">
+                                <i class="fa-solid fa-chart-simple"></i>
+                                Показать результат
+                            </button>
+                        {% endif %}
+                    </div>
                 </form>
+
             {% else %}
-                <div class="empty-state">Вопросы пока не добавлены. Создайте тест, вопросы и ответы в админке Django.</div>
+                <div class="empty-state">
+                    Вопросы пока не добавлены. Создайте тест, вопросы и варианты ответов в админке Django.
+                </div>
             {% endif %}
         </section>
     </div>
@@ -64,12 +120,25 @@
                     <p>Чем больше баллов, тем сильнее ответы совпали с направлением.</p>
                 </div>
             </div>
+
             <div class="grid">
-                {% for item in results|slice:":6" %}
+                {% for item in results|slice:":3" %}
                     <article class="card-item">
                         <span class="tag">{{ item.score }} баллов</span>
-                        <h3 class="mt-3">{{ item.profession.title }}</h3>
-                        <p>{{ item.profession.description|default:"Описание профессии скоро появится."|truncatechars:180 }}</p>
+
+                        <h3 class="mt-3">
+                            {{ item.profession.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.profession.description|default:"Описание профессии скоро появится."|truncatechars:180 }}
+                        </p>
+
+                        {% if item.profession.link %}
+                            <a class="btn-main mt-3" href="{{ item.profession.link }}" target="_blank">
+                                Подробнее
+                            </a>
+                        {% endif %}
                     </article>
                 {% endfor %}
             </div>
