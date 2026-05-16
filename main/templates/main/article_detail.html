@@ -1,0 +1,28 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="page">
+    <article class="article-view">
+        <a class="back-link" href="{% url 'index' %}">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            На главную
+        </a>
+
+        <div class="article-meta">
+            <span class="tag">{{ article.created_at|date:"d.m.Y" }}</span>
+        </div>
+
+        <h1>{{ article.title }}</h1>
+
+        {% if article.anons %}
+            <p class="article-lead">{{ article.anons }}</p>
+        {% endif %}
+
+        <div class="article-body">
+            {{ article.full_text|linebreaks }}
+        </div>
+    </article>
+</div>
+{% endblock %}

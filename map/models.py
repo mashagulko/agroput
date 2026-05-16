@@ -19,10 +19,9 @@ class Specialty(models.Model):
     name = models.CharField("Название специальности", max_length=200)
     description = models.TextField("Описание", null=True, blank=True)
 
-    university = models.ForeignKey(
+    university = models.ManyToManyField(
         University,
-        on_delete=models.CASCADE,
-        verbose_name="Университет"
+        verbose_name="Университеты"
     )
     professions = models.ManyToManyField(
         Profession,

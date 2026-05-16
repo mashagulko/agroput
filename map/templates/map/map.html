@@ -2,43 +2,53 @@
 
 {% block title %}Учебные заведения{% endblock %}
 
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'map/css/map.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="page">
     <h1 class="page-title">Учебные заведения</h1>
-    <p class="page-lead">Здесь можно собрать университеты и колледжи, связанные с аграрными специальностями.</p>
 
-    <div class="map-layout section">
-        <section>
-            <div class="grid" style="grid-template-columns: 1fr;">
-                {% for university in universities %}
-                    <article class="card-item">
-                        <h3>{{ university.name }}</h3>
-                        <p>{{ university.address }}</p>
-                        <div class="tag-row">
-                            {% for specialty in university.specialty_set.all %}
-                                <span class="tag">{{ specialty.name }}</span>
-                            {% empty %}
-                                <span class="tag">специальности не добавлены</span>
-                            {% endfor %}
-                        </div>
-                    </article>
-                {% empty %}
-                    <div class="empty-state">Учебные заведения пока не добавлены.</div>
-                {% endfor %}
+
+    <section class="section map-widget" aria-label="Карта учебных заведений">
+        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Afbc1986866df7b69ac84772a4912427f739007cc6a052d45cfd5e073a8e1e9c0&amp;source=constructor"  width="1200" height="450" frameborder="0"></iframe>
+    </section>
+
+    <section class="section">
+        <div class="section-head">
+            <div>
+                <h2>Список учебных заведений</h2>
+
             </div>
-        </section>
+        </div>
 
-        <section class="map-canvas" aria-label="Схема учебных заведений">
-            {% for university in universities|slice:":4" %}
-                <div class="map-pin" title="{{ university.name }}">
-                    <i class="fa-solid fa-location-dot"></i>
-                </div>
+        <div class="grid">
+            {% for university in universities %}
+                <article class="card-item">
+                    <h3>{{ university.name }}</h3>
+                    <p>{{ university.address }}</p>
+                    <div class="tag-row">
+                        {% for specialty in university.specialty_set.all %}
+                            <span class="tag">{{ specialty.name }}</span>
+                        {% empty %}
+                            <span class="tag">специальности не добавлены</span>
+                        {% endfor %}
+                    </div>
+                    {% if university.link %}
+                        <a class="read-link university-link" href="{{ university.link }}" target="_blank" rel="noopener">
+                            Перейти
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    {% else %}
+                        <span class="tag university-link">ссылка не добавлена</span>
+                    {% endif %}
+                </article>
             {% empty %}
-                <div class="map-pin" style="left: 45%; top: 42%;">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
+                <div class="empty-state">Учебные заведения пока не добавлены.</div>
             {% endfor %}
-        </section>
-    </div>
+        </div>
+    </section>
 </div>
 {% endblock %}
