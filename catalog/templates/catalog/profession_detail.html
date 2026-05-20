@@ -1,0 +1,47 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}{{ profession.title }}{% endblock %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'catalog/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page catalog-page">
+    <a class="back-link" href="{% url 'catalog' %}">
+        <i class="fa-solid fa-arrow-left"></i>
+        К каталогу
+    </a>
+
+    <article class="article-view section">
+        <div class="article-meta">
+            <span class="tag">профессия</span>
+            {% if profession.salary %}
+                <span class="tag">зарплата от {{ profession.salary }} ₽</span>
+            {% else %}
+                <span class="tag">зарплата уточняется</span>
+            {% endif %}
+        </div>
+
+        <h1>{{ profession.title }}</h1>
+
+        <div class="article-body">
+            {% if profession.description %}
+                <p>{{ profession.description|linebreaksbr }}</p>
+            {% else %}
+                <p>Описание профессии пока не добавлено.</p>
+            {% endif %}
+        </div>
+
+        {% if profession.link %}
+            <div class="section">
+                <a class="btn-main" href="{{ profession.link }}" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-up-right-from-square"></i>
+                    Дополнительные источники
+                </a>
+            </div>
+        {% endif %}
+    </article>
+</div>
+{% endblock %}

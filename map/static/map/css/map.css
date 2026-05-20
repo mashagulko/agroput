@@ -1,0 +1,62 @@
+.map-widget {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    margin: 0 auto;
+}
+
+.map-widget iframe {
+    display: block;
+    width: 100%;
+    min-height: 450px;
+    border: 0;
+}
+
+.university-link {
+    margin-top: 14px;
+
+}
+
+.map-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
+    gap: 20px;
+}
+
+.map-canvas {
+    min-height: 520px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background:
+        linear-gradient(90deg, rgba(47, 107, 63, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(47, 107, 63, 0.08) 1px, transparent 1px),
+        #edf5e9;
+    background-size: 46px 46px;
+}
+
+.map-pin {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    box-shadow: var(--shadow);
+}
+
+.map-pin:nth-child(1) { left: 24%; top: 22%; }
+.map-pin:nth-child(2) { left: 58%; top: 34%; }
+.map-pin:nth-child(3) { left: 42%; top: 62%; }
+.map-pin:nth-child(4) { left: 72%; top: 68%; }
+
+@media (max-width: 960px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,12 @@
+.catalog-page .card-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.catalog-page .card-item .tag-row {
+    margin-top: auto;
+}
+
+.catalog-page .article-view {
+    max-width: 840px;
+}

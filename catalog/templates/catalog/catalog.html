@@ -2,38 +2,43 @@
 
 {% block title %}Каталог профессий{% endblock %}
 
-{% block content %}
-<div class="page">
-    <h1 class="page-title">Каталог профессий</h1>
-    <p class="page-lead">Выберите направление, сравните описание и посмотрите, какие специальности могут привести к этой профессии.</p>
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'catalog/css/catalog.css' %}">
+{% endblock %}
 
-    <form class="toolbar" method="get">
-        <input class="search-input" type="search" name="q" value="{{ query }}" placeholder="Поиск по профессии">
-        <button class="btn-main" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            Найти
-        </button>
-        {% if query %}
-            <a class="btn-soft" href="{% url 'catalog' %}">Сбросить</a>
-        {% endif %}
-    </form>
+{% block content %}
+<div class="page catalog-page">
+    <div class="section-head">
+        <div>
+            <h1 class="page-title">Каталог профессий</h1>
+            <p class="page-lead">Выберите направление, сравните описание и откройте подробную страницу профессии.</p>
+        </div>
+    </div>
 
     <div class="grid">
         {% for profession in professions %}
             <article class="card-item">
-                <h3>{{ profession.title }}</h3>
-                <p>{{ profession.description|truncatechars:190 }}</p>
+                <h3>
+                    <a class="card-title-link" href="{% url 'profession_detail' profession.pk %}">
+                        {{ profession.title }}
+                    </a>
+                </h3>
+                <p>{{ profession.description|default:"Описание пока не добавлено."|truncatechars:190 }}</p>
                 <div class="tag-row">
                     {% if profession.salary %}
                         <span class="tag">зарплата от {{ profession.salary }} ₽</span>
                     {% else %}
                         <span class="tag">зарплата уточняется</span>
                     {% endif %}
-                    <span class="tag">профессия</span>
+                    <a class="read-link" href="{% url 'profession_detail' profession.pk %}">
+                        Подробнее
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </div>
             </article>
         {% empty %}
-            <div class="empty-state">По этому запросу профессии не найдены.</div>
+            <div class="empty-state">Профессии пока не добавлены.</div>
         {% endfor %}
     </div>
 </div>

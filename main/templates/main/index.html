@@ -6,7 +6,7 @@
 <div class="page">
     <section class="hero">
         <div>
-            <h1>АгроПуть</h1>
+            <h1>Путь в Агро</h1>
             <p>Помогаем выбрать профессию в агросфере, понять свои сильные стороны и найти учебное заведение для старта карьеры.</p>
             <div class="hero-actions">
                 <a class="btn-main" href="{% url 'quiz' %}">
@@ -43,22 +43,49 @@
                 <p>Короткий путь от интересов к понятному образовательному маршруту.</p>
             </div>
         </div>
-        <div class="grid">
-            <article class="card-item">
-                <span class="tag">1 шаг</span>
+        <div class="route-path" aria-label="Маршрут выбора профессии">
+            <article class="route-step route-step-start">
+                <span class="route-marker">
+                    <i class="fa-solid fa-list-check"></i>
+                </span>
+                <span class="route-number">1 шаг</span>
                 <h3>Пройдите тест</h3>
                 <p>Ответьте на вопросы о том, что вам интересно: техника, растения, животные, управление или исследования.</p>
             </article>
-            <article class="card-item">
-                <span class="tag">2 шаг</span>
+
+            <span class="route-arrow" aria-hidden="true">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </span>
+
+            <article class="route-step">
+                <span class="route-marker">
+                    <i class="fa-solid fa-seedling"></i>
+                </span>
+                <span class="route-number">2 шаг</span>
                 <h3>Получите профессию</h3>
                 <p>Система сопоставляет ответы с направлениями и помогает выбрать подходящую сферу.</p>
             </article>
-            <article class="card-item">
-                <span class="tag">3 шаг</span>
+
+            <span class="route-arrow route-arrow-down" aria-hidden="true">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </span>
+
+            <article class="route-step route-step-end">
+                <span class="route-marker">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </span>
+                <span class="route-number">3 шаг</span>
                 <h3>Найдите где учиться</h3>
                 <p>Посмотрите специальности и учебные заведения, связанные с выбранной профессией.</p>
             </article>
+
+            <div class="route-finish">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <div>
+                    <span>Финиш</span>
+                    <strong>Личный агромаршрут</strong>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -73,10 +100,18 @@
         <div class="grid">
             {% for article in articles %}
                 <article class="card-item">
-                    <h3>{{ article.title }}</h3>
+                    <h3>
+                        <a class="card-title-link" href="{% url 'article_detail' article.id %}">
+                            {{ article.title }}
+                        </a>
+                    </h3>
                     <p>{{ article.anons }}</p>
                     <div class="meta-row">
                         <span class="tag">{{ article.created_at|date:"d.m.Y" }}</span>
+                        <a class="read-link" href="{% url 'article_detail' article.id %}">
+                            Читать
+                            <i class="fa-solid fa-arrow-right-long"></i>
+                        </a>
                     </div>
                 </article>
             {% empty %}
